@@ -1,0 +1,1440 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://schemas.fdbhealth.com/CC/v1_3" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="OKAmbulatoryService" targetNamespace="http://schemas.fdbhealth.com/CC/v1_3" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xs:schema elementFormDefault="qualified" targetNamespace="http://schemas.fdbhealth.com/CC/v1_3" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:import namespace="http://microsoft.com/wsdl/types/" />
+      <xs:element name="SearchSigs">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="searchSigsRequest" type="tns:SearchSigsRequest" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="SearchSigsRequest">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:PagedCollection">
+            <xs:sequence>
+              <xs:element minOccurs="0" maxOccurs="1" name="SearchText" type="xs:string" />
+              <xs:element minOccurs="0" maxOccurs="1" name="SearchType" type="xs:string" />
+              <xs:element minOccurs="1" maxOccurs="1" name="SigTypeCode" type="xs:int" />
+              <xs:element minOccurs="1" maxOccurs="1" name="FilterByPatientAge" type="xs:boolean" />
+              <xs:element minOccurs="1" maxOccurs="1" name="CommonSigsOnly" type="xs:boolean" />
+              <xs:element minOccurs="1" maxOccurs="1" name="IncludeTubalRoutes" type="xs:boolean" />
+              <xs:element minOccurs="0" maxOccurs="1" name="SearchFilter" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="PagedCollection">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:ServiceRequestBase">
+            <xs:sequence>
+              <xs:element minOccurs="1" maxOccurs="1" name="Offset" type="xs:int" />
+              <xs:element minOccurs="1" maxOccurs="1" name="Limit" type="xs:int" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="ServiceRequestBase">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:RequestBase">
+            <xs:sequence>
+              <xs:element minOccurs="0" maxOccurs="1" name="ResponseFields" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="RequestBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="CallContext" type="tns:CallContext" />
+          <xs:element minOccurs="0" maxOccurs="1" name="PatientProfile" type="tns:PatientProfile" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="CallContext">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="CallSystemName" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="CallID" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="DeptName" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="PatientProfile">
+        <xs:sequence>
+          <xs:element minOccurs="1" maxOccurs="1" name="BirthDate" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="1" maxOccurs="1" name="PatientWeight" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="1" maxOccurs="1" name="PatientWeightUnits" nillable="true" type="tns:PatientWeightUnits" />
+          <xs:element minOccurs="1" maxOccurs="1" name="GestationalAgeInWeeks" nillable="true" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="BodySurfaceArea" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="1" maxOccurs="1" name="BodySurfaceAreaUnits" nillable="true" type="tns:BodySurfaceAreaUnits" />
+          <xs:element minOccurs="1" maxOccurs="1" name="CreatinineClearance" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="1" maxOccurs="1" name="CreatinineClearanceLevelUnits" nillable="true" type="tns:CreatinineClearanceUnits" />
+          <xs:element minOccurs="1" maxOccurs="1" name="HepaticLevel" nillable="true" type="tns:HepaticLevel" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Sex" nillable="true" type="tns:Sex" />
+          <xs:element minOccurs="1" maxOccurs="1" name="AgeInDays" nillable="true" type="xs:int" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:simpleType name="PatientWeightUnits">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Gram" />
+          <xs:enumeration value="Kilogram" />
+          <xs:enumeration value="Pounds" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="BodySurfaceAreaUnits">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="MeterSquared" />
+          <xs:enumeration value="CentimeterSquaredOfLesion" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="CreatinineClearanceUnits">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="MilliliterPerMinute" />
+          <xs:enumeration value="MilliliterPerMinutePer1Point73MetersSquared" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="HepaticLevel">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Normal" />
+          <xs:enumeration value="Mild" />
+          <xs:enumeration value="Moderate" />
+          <xs:enumeration value="Severe" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="Sex">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Male" />
+          <xs:enumeration value="Female" />
+          <xs:enumeration value="Undifferentiated" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:element name="SearchSigsResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="SearchSigsResult" type="tns:SearchSigsResponse" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="SearchSigsResponse">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:PagedCollectionOfSig" />
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="PagedCollectionOfSig">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:ResponseBase">
+            <xs:sequence>
+              <xs:element minOccurs="1" maxOccurs="1" name="offset" type="xs:int" />
+              <xs:element minOccurs="1" maxOccurs="1" name="limit" type="xs:int" />
+              <xs:element minOccurs="1" maxOccurs="1" name="TotalResultCount" type="xs:int" />
+              <xs:element minOccurs="0" maxOccurs="1" name="Items" type="tns:ArrayOfSig" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="ResponseBase" abstract="true">
+        <xs:sequence>
+          <xs:element xmlns:q1="http://microsoft.com/wsdl/types/" minOccurs="1" maxOccurs="1" name="ServiceCallID" type="q1:guid" />
+          <xs:element minOccurs="0" maxOccurs="1" name="ResponseFields" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="ArrayOfSig">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Sig" nillable="true" type="tns:Sig" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="Sig">
+        <xs:sequence>
+          <xs:element minOccurs="1" maxOccurs="1" name="SigID" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="SigTypeCode" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="SigTypeDesc" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="SigText" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="OrderTypeID" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="OrderTypeDesc" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="DispensableGenericID" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="DispensableGenericDesc" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="PatientParameterRequiredCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="PatientParameterRequiredDesc" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="AgeDaysLow" nillable="true" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="AgeDaysHigh" nillable="true" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="OrderID" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="RouteID" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="RouteShortDesc" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="RouteLongDesc" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="DoseAsText" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="DoseAsIngredientID" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="DoseAsIngredientDesc" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="LowDoseAmount" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="1" maxOccurs="1" name="HighDoseAmount" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="1" maxOccurs="1" name="DoseUnitID" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="DoseUnitDesc" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="PatientParameterIncorporatedUnitID" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="PatientParameterIncorporatedUnitDesc" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="DoseStrengthTypeCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="DoseStrengthTypeCodeDesc" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="LowAdminAmount" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="1" maxOccurs="1" name="HighAdminAmount" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="1" maxOccurs="1" name="AdminUnitID" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="AdminUnitDesc" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="NotToExceedDoseAmount" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="1" maxOccurs="1" name="NotToExceedDoseUnitID" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="NotToExceedDoseUnitDesc" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="NotToExceedAdminAmount" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="1" maxOccurs="1" name="NotToExceedAdminUnitID" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="NotToExceedAdminUnitDesc" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="VarianceFactorLow" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="1" maxOccurs="1" name="VarianceFactorHigh" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="1" maxOccurs="1" name="DosesPerDayAmount" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="1" maxOccurs="1" name="FrequencyID" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="FrequencyShortDesc" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="FrequencyLongDesc" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="AnatomicSiteID" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="AnatomicSiteDesc" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="PRNReasonID" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="PRNReasonDesc" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="DurationAmount" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="1" maxOccurs="1" name="DurationUnitID" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="DurationUnitDesc" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="PieceCount" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="1" maxOccurs="1" name="SigAddDate" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="1" maxOccurs="1" name="SigInactiveDate" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="1" maxOccurs="1" name="AdditionalInstructionsID" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="AdditionalInstructionsText" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="FreeTextOnlyIndicator" type="xs:boolean" />
+          <xs:element minOccurs="1" maxOccurs="1" name="IsCommon" type="xs:boolean" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="SearchPrescribableDrugs">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="searchPrescribableDrugsRequest" type="tns:SearchPrescribableDrugsRequest" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="SearchPrescribableDrugsRequest">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:PagedCollection">
+            <xs:sequence>
+              <xs:element minOccurs="1" maxOccurs="1" name="SearchText" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" maxOccurs="1" name="SearchTermTypeCodes" type="tns:ArrayOfString" />
+              <xs:element minOccurs="0" maxOccurs="1" name="SearchType" type="xs:string" />
+              <xs:element minOccurs="0" maxOccurs="1" name="ConditionID" type="xs:string" />
+              <xs:element minOccurs="1" maxOccurs="1" name="ConditionConceptType" nillable="true" type="tns:ConditionConceptType" />
+              <xs:element minOccurs="1" maxOccurs="1" name="FilterByPatientAge" type="xs:boolean" />
+              <xs:element minOccurs="0" maxOccurs="1" name="SearchFilter" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="ArrayOfString">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:simpleType name="ConditionConceptType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="ICD9DiseaseInjury" />
+          <xs:enumeration value="ICD9Procedures" />
+          <xs:enumeration value="ICD9VCodes" />
+          <xs:enumeration value="ICD9ECodes" />
+          <xs:enumeration value="ICD10CM" />
+          <xs:enumeration value="ICD10PCS" />
+          <xs:enumeration value="DXID" />
+          <xs:enumeration value="SNOMED" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:element name="SearchPrescribableDrugsResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="SearchPrescribableDrugsResult" type="tns:SearchPrescribableDrugsResponse" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="SearchPrescribableDrugsResponse">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:PagedCollectionOfPrescribableDrug" />
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="PagedCollectionOfPrescribableDrug">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:ResponseBase">
+            <xs:sequence>
+              <xs:element minOccurs="1" maxOccurs="1" name="offset" type="xs:int" />
+              <xs:element minOccurs="1" maxOccurs="1" name="limit" type="xs:int" />
+              <xs:element minOccurs="1" maxOccurs="1" name="TotalResultCount" type="xs:int" />
+              <xs:element minOccurs="0" maxOccurs="1" name="Items" type="tns:ArrayOfPrescribableDrug" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="ArrayOfPrescribableDrug">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="PrescribableDrug" nillable="true" type="tns:PrescribableDrug" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="PrescribableDrug">
+        <xs:sequence>
+          <xs:element minOccurs="1" maxOccurs="1" name="PrescribableDrugID" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="PrescribableDrugDesc" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="PrescribableDrugTallManDesc" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="StatusCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="StatusCodeDesc" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="DispensableGenericID" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="DispensableGenericDesc" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="GenericDispensableDrugID" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="GenericDispensableDrugDesc" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="GenericDispensableDrugTallmanDesc" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="DefaultETCID" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="DefaultETCDesc" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="IsMedicalDevice" type="xs:boolean" />
+          <xs:element minOccurs="1" maxOccurs="1" name="IsSingleIngredient" type="xs:boolean" />
+          <xs:element minOccurs="1" maxOccurs="1" name="FederalLegendCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="FederalLegendCodeDesc" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="FederalDEAClassCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="FederalDEAClassCodeDesc" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="MultiSourceCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="MultiSourceCodeDesc" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="HasRenalAdjustments" type="xs:boolean" />
+          <xs:element minOccurs="1" maxOccurs="1" name="HasHepaticAdjustments" type="xs:boolean" />
+          <xs:element minOccurs="1" maxOccurs="1" name="CreatinineClearanceThreshold" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="1" maxOccurs="1" name="PrescribableAgeDaysLow" nillable="true" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="PrescribableAgeDaysHigh" nillable="true" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="IsActivePrescribableDrug" type="xs:boolean" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="GetPrescribableDrugByID">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="getPrescribableDrugByIDRequest" type="tns:GetPrescribableDrugByIDRequest" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="GetPrescribableDrugByIDRequest">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:ServiceRequestBase">
+            <xs:sequence>
+              <xs:element minOccurs="0" maxOccurs="1" name="PrescribableDrugID" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="GetPrescribableDrugByIDResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="GetPrescribableDrugByIDResult" type="tns:GetPrescribableDrugByIDResponse" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="GetPrescribableDrugByIDResponse">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:ResponseBase">
+            <xs:sequence>
+              <xs:element minOccurs="0" maxOccurs="1" name="PrescribableDrug" type="tns:PrescribableDrug" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="GetRelatedPrescribableDrugs">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="getRelatedPrescribableDrugsRequest" type="tns:GetRelatedPrescribableDrugsRequest" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="GetRelatedPrescribableDrugsRequest">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:PagedCollection">
+            <xs:sequence>
+              <xs:element minOccurs="0" maxOccurs="1" name="DrugID" type="xs:string" />
+              <xs:element minOccurs="0" maxOccurs="1" name="DrugConceptType" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="GetRelatedPrescribableDrugsResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="GetRelatedPrescribableDrugsResult" type="tns:GetRelatedPrescribableDrugsResponse" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="GetRelatedPrescribableDrugsResponse">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:PagedCollectionOfPrescribableDrug">
+            <xs:sequence>
+              <xs:element minOccurs="1" maxOccurs="1" name="DrugID" nillable="true" type="xs:string" />
+              <xs:element minOccurs="1" maxOccurs="1" name="DrugConceptType" nillable="true" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="GetDistinctDosesByPrescribableDrug">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="getDistinctDosesByPrescribableDrugRequest" type="tns:GetDistinctDosesByPrescribableDrugRequest" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="GetDistinctDosesByPrescribableDrugRequest">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:PagedCollection">
+            <xs:sequence>
+              <xs:element minOccurs="1" maxOccurs="1" name="IncludePatientParameterSigs" type="xs:boolean" />
+              <xs:element minOccurs="1" maxOccurs="1" name="FilterByPatientAge" type="xs:boolean" />
+              <xs:element minOccurs="0" maxOccurs="1" name="PrescribableDrugID" type="xs:string" />
+              <xs:element minOccurs="1" maxOccurs="1" name="SigTypeCode" type="xs:int" />
+              <xs:element minOccurs="1" maxOccurs="1" name="IncludeTubalRouteSigs" type="xs:boolean" />
+              <xs:element minOccurs="1" maxOccurs="1" name="IncludeInactiveSigs" type="xs:boolean" />
+              <xs:element minOccurs="1" maxOccurs="1" name="CommonSigsOnly" type="xs:boolean" />
+              <xs:element minOccurs="0" maxOccurs="1" name="SearchFilter" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="GetDistinctDosesByPrescribableDrugResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="GetDistinctDosesByPrescribableDrugResult" type="tns:GetDistinctDosesByPrescribableDrugResponse" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="GetDistinctDosesByPrescribableDrugResponse">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:PagedCollectionOfDistinctDose">
+            <xs:sequence>
+              <xs:element minOccurs="0" maxOccurs="1" name="PrescribableDrugID" type="xs:string" />
+              <xs:element minOccurs="0" maxOccurs="1" name="PrescribableDrugDesc" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="PagedCollectionOfDistinctDose">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:ResponseBase">
+            <xs:sequence>
+              <xs:element minOccurs="1" maxOccurs="1" name="offset" type="xs:int" />
+              <xs:element minOccurs="1" maxOccurs="1" name="limit" type="xs:int" />
+              <xs:element minOccurs="1" maxOccurs="1" name="TotalResultCount" type="xs:int" />
+              <xs:element minOccurs="0" maxOccurs="1" name="Items" type="tns:ArrayOfDistinctDose" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="ArrayOfDistinctDose">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="DistinctDose" nillable="true" type="tns:DistinctDose" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="DistinctDose">
+        <xs:sequence>
+          <xs:element minOccurs="1" maxOccurs="1" name="LowDoseAmount" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="1" maxOccurs="1" name="HighDoseAmount" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="1" maxOccurs="1" name="DoseUnitDesc" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="DoseUnitID" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="DoseAsIngredientID" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="DoseAsIngredientDesc" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="DoseStrengthTypeCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="DoseStrengthTypeCodeDesc" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="DoseAsText" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="FreeTextOnlyIndicator" type="xs:boolean" />
+          <xs:element minOccurs="1" maxOccurs="1" name="IsFixedDose" type="xs:boolean" />
+          <xs:element minOccurs="1" maxOccurs="1" name="TotalCount" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="SpansCommonSigs" type="xs:boolean" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="GetSigsByPrescribableDrug">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="getSigsByPrescribableDrugRequest" type="tns:GetSigsByPrescribableDrugRequest" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="GetSigsByPrescribableDrugRequest">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:PagedCollection">
+            <xs:sequence>
+              <xs:element minOccurs="0" maxOccurs="1" name="PrescribableDrugID" type="xs:string" />
+              <xs:element minOccurs="1" maxOccurs="1" name="SigTypeCode" type="xs:int" />
+              <xs:element minOccurs="1" maxOccurs="1" name="IncludePatientParameterSigs" type="xs:boolean" />
+              <xs:element minOccurs="1" maxOccurs="1" name="IncludeTubalRouteSigs" type="xs:boolean" />
+              <xs:element minOccurs="1" maxOccurs="1" name="IncludeInactiveSigs" type="xs:boolean" />
+              <xs:element minOccurs="1" maxOccurs="1" name="FilterByPatientAge" type="xs:boolean" />
+              <xs:element minOccurs="1" maxOccurs="1" name="CommonSigsOnly" type="xs:boolean" />
+              <xs:element minOccurs="0" maxOccurs="1" name="SearchFilter" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="GetSigsByPrescribableDrugResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="GetSigsByPrescribableDrugResult" type="tns:GetSigsByPrescribableDrugResponse" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="GetSigsByPrescribableDrugResponse">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:PagedCollectionOfSig">
+            <xs:sequence>
+              <xs:element minOccurs="1" maxOccurs="1" name="PrescribableDrugID" nillable="true" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="GetSigByID">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="getSigByIDRequest" type="tns:GetSigByIDRequest" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="GetSigByIDRequest">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:ServiceRequestBase">
+            <xs:sequence>
+              <xs:element minOccurs="0" maxOccurs="1" name="SigID" type="xs:string" />
+              <xs:element minOccurs="1" maxOccurs="1" name="SigTypeCode" type="xs:int" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="GetSigByIDResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="GetSigByIDResult" type="tns:GetSigByIDResponse" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="GetSigByIDResponse">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:ResponseBase">
+            <xs:sequence>
+              <xs:element minOccurs="0" maxOccurs="1" name="Sig" type="tns:Sig" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="GetAdultSigsByPrescribableDrug">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="getAdultSigsByPrescribableDrugRequest" type="tns:GetAdultSigsByPrescribableDrugRequest" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="GetAdultSigsByPrescribableDrugRequest">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:PagedCollection">
+            <xs:sequence>
+              <xs:element minOccurs="0" maxOccurs="1" name="PrescribableDrugID" type="xs:string" />
+              <xs:element minOccurs="1" maxOccurs="1" name="SigTypeCode" type="xs:int" />
+              <xs:element minOccurs="1" maxOccurs="1" name="IncludePatientParameterSigs" type="xs:boolean" />
+              <xs:element minOccurs="1" maxOccurs="1" name="IncludeInactiveSigs" type="xs:boolean" />
+              <xs:element minOccurs="1" maxOccurs="1" name="FilterByPatientAge" type="xs:boolean" />
+              <xs:element minOccurs="0" maxOccurs="1" name="SearchFilter" type="xs:string" />
+              <xs:element minOccurs="1" maxOccurs="1" name="CommonSigsOnly" type="xs:boolean" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="GetAdultSigsByPrescribableDrugResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="GetAdultSigsByPrescribableDrugResult" type="tns:GetAdultSigsByPrescribableDrugResponse" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="GetAdultSigsByPrescribableDrugResponse">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:PagedCollectionOfSig">
+            <xs:sequence>
+              <xs:element minOccurs="1" maxOccurs="1" name="PrescribableDrugID" nillable="true" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="GetSigsByOrderID">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="getSigsByOrderIDRequest" type="tns:GetSigsByOrderIDRequest" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="GetSigsByOrderIDRequest">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:PagedCollection">
+            <xs:sequence>
+              <xs:element minOccurs="0" maxOccurs="1" name="OrderID" type="xs:string" />
+              <xs:element minOccurs="1" maxOccurs="1" name="SigTypeCode" type="xs:int" />
+              <xs:element minOccurs="0" maxOccurs="1" name="SearchFilter" type="xs:string" />
+              <xs:element minOccurs="1" maxOccurs="1" name="CommonSigsOnly" type="xs:boolean" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="GetSigsByOrderIDResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="GetSigsByOrderIDResult" type="tns:GetSigsByOrderIDResponse" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="GetSigsByOrderIDResponse">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:PagedCollectionOfSig" />
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="GetSearchTermsByPrescribableDrug">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="getSearchTermsByPrescribableDrugRequest" type="tns:GetSearchTermsByPrescribableDrugRequest" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="GetSearchTermsByPrescribableDrugRequest">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:PagedCollection">
+            <xs:sequence>
+              <xs:element minOccurs="0" maxOccurs="1" name="PrescribableDrugID" type="xs:string" />
+              <xs:element minOccurs="0" maxOccurs="1" name="SearchTermTypeCodes" type="tns:ArrayOfString" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="GetSearchTermsByPrescribableDrugResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="GetSearchTermsByPrescribableDrugResult" type="tns:GetSearchTermsByPrescribableDrugResponse" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="GetSearchTermsByPrescribableDrugResponse">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:PagedCollectionOfPrescribableDrugSearchTerm">
+            <xs:sequence>
+              <xs:element minOccurs="1" maxOccurs="1" name="PrescribableDrugID" nillable="true" type="xs:string" />
+              <xs:element minOccurs="1" maxOccurs="1" name="PrescribableDrugDesc" nillable="true" type="xs:string" />
+              <xs:element minOccurs="1" maxOccurs="1" name="PrescribableDrugTallManDesc" nillable="true" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="PagedCollectionOfPrescribableDrugSearchTerm">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:ResponseBase">
+            <xs:sequence>
+              <xs:element minOccurs="1" maxOccurs="1" name="offset" type="xs:int" />
+              <xs:element minOccurs="1" maxOccurs="1" name="limit" type="xs:int" />
+              <xs:element minOccurs="1" maxOccurs="1" name="TotalResultCount" type="xs:int" />
+              <xs:element minOccurs="0" maxOccurs="1" name="Items" type="tns:ArrayOfPrescribableDrugSearchTerm" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="ArrayOfPrescribableDrugSearchTerm">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="PrescribableDrugSearchTerm" nillable="true" type="tns:PrescribableDrugSearchTerm" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="PrescribableDrugSearchTerm">
+        <xs:sequence>
+          <xs:element minOccurs="1" maxOccurs="1" name="SearchText" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="SearchTermTypeCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="SearchTermTypeDesc" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="GetCalculatedSigsByPrescribableDrug">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="getCalculatedSigsByPrescribableDrugRequest" type="tns:GetCalculatedSigsByDrugRequest" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="GetCalculatedSigsByDrugRequest">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:PagedCollection">
+            <xs:sequence>
+              <xs:element minOccurs="0" maxOccurs="1" name="PrescribableDrugID" type="xs:string" />
+              <xs:element minOccurs="1" maxOccurs="1" name="SigTypeCode" type="xs:int" />
+              <xs:element minOccurs="1" maxOccurs="1" name="IncludeTubalRouteSigs" type="xs:boolean" />
+              <xs:element minOccurs="1" maxOccurs="1" name="IncludeInactiveSigs" type="xs:boolean" />
+              <xs:element minOccurs="1" maxOccurs="1" name="CommonSigsOnly" type="xs:boolean" />
+              <xs:element minOccurs="0" maxOccurs="1" name="SearchFilter" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="GetCalculatedSigsByPrescribableDrugResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="GetCalculatedSigsByPrescribableDrugResult" type="tns:GetCalculatedSigsByDrugResponse" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="GetCalculatedSigsByDrugResponse">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:PagedCollectionOfCalculatedSig">
+            <xs:sequence>
+              <xs:element minOccurs="1" maxOccurs="1" name="PrescribableDrugID" nillable="true" type="xs:string" />
+              <xs:element minOccurs="1" maxOccurs="1" name="PrescribableDrugDesc" nillable="true" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="PagedCollectionOfCalculatedSig">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:ResponseBase">
+            <xs:sequence>
+              <xs:element minOccurs="1" maxOccurs="1" name="offset" type="xs:int" />
+              <xs:element minOccurs="1" maxOccurs="1" name="limit" type="xs:int" />
+              <xs:element minOccurs="1" maxOccurs="1" name="TotalResultCount" type="xs:int" />
+              <xs:element minOccurs="0" maxOccurs="1" name="Items" type="tns:ArrayOfCalculatedSig" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="ArrayOfCalculatedSig">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="CalculatedSig" nillable="true" type="tns:CalculatedSig" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="CalculatedSig">
+        <xs:sequence>
+          <xs:element minOccurs="1" maxOccurs="1" name="DoseIsCalculated" type="xs:boolean" />
+          <xs:element minOccurs="1" maxOccurs="1" name="CalculatedSigText" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="CalculatedAdminAmount" nillable="true" type="xs:double" />
+          <xs:element minOccurs="1" maxOccurs="1" name="CalculatedAdminUnitID" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="CalculatedAdminUnitDesc" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="CalculatedDoseAmount" nillable="true" type="xs:double" />
+          <xs:element minOccurs="1" maxOccurs="1" name="CalculatedDoseUnitID" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="CalculatedDoseUnitDesc" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="CalculatedVarianceFactor" nillable="true" type="xs:double" />
+          <xs:element minOccurs="1" maxOccurs="1" name="ReplacedWithNotToExceed" type="xs:boolean" />
+          <xs:element minOccurs="1" maxOccurs="1" name="InError" type="xs:boolean" />
+          <xs:element minOccurs="1" maxOccurs="1" name="NotSupported" type="xs:boolean" />
+          <xs:element minOccurs="0" maxOccurs="1" name="ErrorFlags" type="tns:CalculatedObjectErrorFlags" />
+          <xs:element minOccurs="1" maxOccurs="1" name="IntermediateSteps" nillable="true" type="tns:CalculatedObjectIntermediateSteps" />
+          <xs:element minOccurs="0" maxOccurs="1" name="Sig" type="tns:Sig" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="CalculatedObjectErrorFlags">
+        <xs:sequence>
+          <xs:element minOccurs="1" maxOccurs="1" name="MissingPatientParameter" type="xs:boolean" />
+          <xs:element minOccurs="1" maxOccurs="1" name="StrengthNotFound" type="xs:boolean" />
+          <xs:element minOccurs="1" maxOccurs="1" name="RoundIncrementNotFound" type="xs:boolean" />
+          <xs:element minOccurs="1" maxOccurs="1" name="CalculatedDoseOutsideVarianceRange" type="xs:boolean" />
+          <xs:element minOccurs="1" maxOccurs="1" name="DosingLimitExceeded" type="xs:boolean" />
+          <xs:element minOccurs="1" maxOccurs="1" name="DosingLimitNoInformation" type="xs:boolean" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="CalculatedObjectIntermediateSteps">
+        <xs:sequence>
+          <xs:element minOccurs="1" maxOccurs="1" name="RawCalculatedDoseAmount" nillable="true" type="xs:double" />
+          <xs:element minOccurs="1" maxOccurs="1" name="LowRoundedAdminAmount" nillable="true" type="xs:double" />
+          <xs:element minOccurs="1" maxOccurs="1" name="LowVarianceFactor" nillable="true" type="xs:double" />
+          <xs:element minOccurs="1" maxOccurs="1" name="LowRoundedDoseAmount" nillable="true" type="xs:double" />
+          <xs:element minOccurs="1" maxOccurs="1" name="LowRoundedDoseUnitID" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="LowRoundedDoseUnitDesc" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="HighRoundedAdminAmount" nillable="true" type="xs:double" />
+          <xs:element minOccurs="1" maxOccurs="1" name="HighVarianceFactor" nillable="true" type="xs:double" />
+          <xs:element minOccurs="1" maxOccurs="1" name="HighRoundedDoseAmount" nillable="true" type="xs:double" />
+          <xs:element minOccurs="1" maxOccurs="1" name="HighRoundedDoseUnitID" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="HighRoundedDoseUnitDesc" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="VarianceAmountLow" nillable="true" type="xs:double" />
+          <xs:element minOccurs="1" maxOccurs="1" name="VarianceAmountHigh" nillable="true" type="xs:double" />
+          <xs:element minOccurs="1" maxOccurs="1" name="RoundIncrementAmount" nillable="true" type="xs:double" />
+          <xs:element minOccurs="1" maxOccurs="1" name="RoundIncrementUnitID" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="RoundIncrementUnitDesc" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="RoundIncrementAdminAmount" nillable="true" type="xs:double" />
+          <xs:element minOccurs="1" maxOccurs="1" name="RoundIncrementAdminUnitID" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="RoundIncrementAdminUnitDesc" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="DoseStrength" nillable="true" type="xs:double" />
+          <xs:element minOccurs="1" maxOccurs="1" name="DoseStrengthUnitID" nillable="true" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="DoseStrengthUnitDesc" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Volume" nillable="true" type="xs:double" />
+          <xs:element minOccurs="1" maxOccurs="1" name="VolumeUnitID" nillable="true" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="VolumeUnitDesc" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="GetCalculatedSigByID">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="getCalculatedSigByIDRequest" type="tns:GetCalculatedSigByIDRequest" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="GetCalculatedSigByIDRequest">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:RequestBase">
+            <xs:sequence>
+              <xs:element minOccurs="0" maxOccurs="1" name="SigID" type="xs:string" />
+              <xs:element minOccurs="1" maxOccurs="1" name="SigTypeCodeID" type="xs:int" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="GetCalculatedSigByIDResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="GetCalculatedSigByIDResult" type="tns:GetCalculatedSigByIDResponse" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="GetCalculatedSigByIDResponse">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:PagedCollectionOfCalculatedSig" />
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="GetSigTemplate">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="getSigTemplateRequest" type="tns:GetSigTemplateRequest" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="GetSigTemplateRequest">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:ServiceRequestBase">
+            <xs:sequence>
+              <xs:element minOccurs="0" maxOccurs="1" name="SigID" type="xs:string" />
+              <xs:element minOccurs="0" maxOccurs="1" name="PrescribableDrugID" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="GetSigTemplateResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="GetSigTemplateResult" type="tns:GetSigTemplateResponse" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="GetSigTemplateResponse">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:ResponseBase">
+            <xs:sequence>
+              <xs:element minOccurs="0" maxOccurs="1" name="SigTemplate" type="tns:SigTemplate" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="SigTemplate">
+        <xs:sequence>
+          <xs:element minOccurs="1" maxOccurs="1" name="PrescribableDrugID" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="SigID" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="TemplateID" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Template" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="PrepositionalPhrase" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="DosageRouteQualifierShortDesc" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="DosageRouteQualifierLongDesc" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+    </xs:schema>
+    <xs:schema xmlns:tns="http://microsoft.com/wsdl/types/" elementFormDefault="qualified" targetNamespace="http://microsoft.com/wsdl/types/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:simpleType name="guid">
+        <xs:restriction base="xs:string">
+          <xs:pattern value="[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:schema>
+    <xs:schema xmlns:tns="http://schemas.microsoft.com/2003/10/Serialization/" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:element name="anyType" nillable="true" type="xs:anyType" />
+      <xs:element name="anyURI" nillable="true" type="xs:anyURI" />
+      <xs:element name="base64Binary" nillable="true" type="xs:base64Binary" />
+      <xs:element name="boolean" nillable="true" type="xs:boolean" />
+      <xs:element name="byte" nillable="true" type="xs:byte" />
+      <xs:element name="dateTime" nillable="true" type="xs:dateTime" />
+      <xs:element name="decimal" nillable="true" type="xs:decimal" />
+      <xs:element name="double" nillable="true" type="xs:double" />
+      <xs:element name="float" nillable="true" type="xs:float" />
+      <xs:element name="int" nillable="true" type="xs:int" />
+      <xs:element name="long" nillable="true" type="xs:long" />
+      <xs:element name="QName" nillable="true" type="xs:QName" />
+      <xs:element name="short" nillable="true" type="xs:short" />
+      <xs:element name="string" nillable="true" type="xs:string" />
+      <xs:element name="unsignedByte" nillable="true" type="xs:unsignedByte" />
+      <xs:element name="unsignedInt" nillable="true" type="xs:unsignedInt" />
+      <xs:element name="unsignedLong" nillable="true" type="xs:unsignedLong" />
+      <xs:element name="unsignedShort" nillable="true" type="xs:unsignedShort" />
+      <xs:element name="char" nillable="true" type="tns:char" />
+      <xs:simpleType name="char">
+        <xs:restriction base="xs:int" />
+      </xs:simpleType>
+      <xs:element name="duration" nillable="true" type="tns:duration" />
+      <xs:simpleType name="duration">
+        <xs:restriction base="xs:duration">
+          <xs:pattern value="\-?P(\d*D)?(T(\d*H)?(\d*M)?(\d*(\.\d*)?S)?)?" />
+          <xs:minInclusive value="-P10675199DT2H48M5.4775808S" />
+          <xs:maxInclusive value="P10675199DT2H48M5.4775807S" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:element name="guid" nillable="true" type="tns:guid" />
+      <xs:simpleType name="guid">
+        <xs:restriction base="xs:string">
+          <xs:pattern value="[\da-fA-F]{8}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{12}" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:attribute name="FactoryType" type="xs:QName" />
+      <xs:attribute name="Id" type="xs:ID" />
+      <xs:attribute name="Ref" type="xs:IDREF" />
+    </xs:schema>
+    <xs:schema xmlns:tns="http://schemas.fdbhealth.com/CC" elementFormDefault="qualified" targetNamespace="http://schemas.fdbhealth.com/CC" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:complexType name="AuthorizationFault">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Message" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ServiceCallID" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="AuthorizationFault" nillable="true" type="tns:AuthorizationFault" />
+      <xs:complexType name="ValidationFault">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="ServiceCallID" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ValidationMessage" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ValidationType" type="tns:ValidationType" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ValidationFault" nillable="true" type="tns:ValidationFault" />
+      <xs:simpleType name="ValidationType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Invalid" />
+          <xs:enumeration value="Missing" />
+          <xs:enumeration value="NotSupported" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:element name="ValidationType" nillable="true" type="tns:ValidationType" />
+      <xs:complexType name="InternalFault">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="ServiceCallID" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="InternalFault" nillable="true" type="tns:InternalFault" />
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="IOKAmbulatoryService_SearchSigs_InputMessage">
+    <wsdl:part name="parameters" element="tns:SearchSigs" />
+  </wsdl:message>
+  <wsdl:message name="IOKAmbulatoryService_SearchSigs_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SearchSigsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IOKAmbulatoryService_SearchSigs_AuthorizationFault_FaultMessage">
+    <wsdl:part xmlns:q1="http://schemas.fdbhealth.com/CC" name="detail" element="q1:AuthorizationFault" />
+  </wsdl:message>
+  <wsdl:message name="IOKAmbulatoryService_SearchSigs_ValidationFault_FaultMessage">
+    <wsdl:part xmlns:q2="http://schemas.fdbhealth.com/CC" name="detail" element="q2:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IOKAmbulatoryService_SearchSigs_InternalFault_FaultMessage">
+    <wsdl:part xmlns:q3="http://schemas.fdbhealth.com/CC" name="detail" element="q3:InternalFault" />
+  </wsdl:message>
+  <wsdl:message name="IOKAmbulatoryService_SearchPrescribableDrugs_InputMessage">
+    <wsdl:part name="parameters" element="tns:SearchPrescribableDrugs" />
+  </wsdl:message>
+  <wsdl:message name="IOKAmbulatoryService_SearchPrescribableDrugs_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SearchPrescribableDrugsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IOKAmbulatoryService_SearchPrescribableDrugs_AuthorizationFault_FaultMessage">
+    <wsdl:part xmlns:q4="http://schemas.fdbhealth.com/CC" name="detail" element="q4:AuthorizationFault" />
+  </wsdl:message>
+  <wsdl:message name="IOKAmbulatoryService_SearchPrescribableDrugs_ValidationFault_FaultMessage">
+    <wsdl:part xmlns:q5="http://schemas.fdbhealth.com/CC" name="detail" element="q5:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IOKAmbulatoryService_SearchPrescribableDrugs_InternalFault_FaultMessage">
+    <wsdl:part xmlns:q6="http://schemas.fdbhealth.com/CC" name="detail" element="q6:InternalFault" />
+  </wsdl:message>
+  <wsdl:message name="IOKAmbulatoryService_GetPrescribableDrugByID_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetPrescribableDrugByID" />
+  </wsdl:message>
+  <wsdl:message name="IOKAmbulatoryService_GetPrescribableDrugByID_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetPrescribableDrugByIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="IOKAmbulatoryService_GetPrescribableDrugByID_AuthorizationFault_FaultMessage">
+    <wsdl:part xmlns:q7="http://schemas.fdbhealth.com/CC" name="detail" element="q7:AuthorizationFault" />
+  </wsdl:message>
+  <wsdl:message name="IOKAmbulatoryService_GetPrescribableDrugByID_ValidationFault_FaultMessage">
+    <wsdl:part xmlns:q8="http://schemas.fdbhealth.com/CC" name="detail" element="q8:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IOKAmbulatoryService_GetPrescribableDrugByID_InternalFault_FaultMessage">
+    <wsdl:part xmlns:q9="http://schemas.fdbhealth.com/CC" name="detail" element="q9:InternalFault" />
+  </wsdl:message>
+  <wsdl:message name="IOKAmbulatoryService_GetRelatedPrescribableDrugs_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetRelatedPrescribableDrugs" />
+  </wsdl:message>
+  <wsdl:message name="IOKAmbulatoryService_GetRelatedPrescribableDrugs_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetRelatedPrescribableDrugsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IOKAmbulatoryService_GetRelatedPrescribableDrugs_AuthorizationFault_FaultMessage">
+    <wsdl:part xmlns:q10="http://schemas.fdbhealth.com/CC" name="detail" element="q10:AuthorizationFault" />
+  </wsdl:message>
+  <wsdl:message name="IOKAmbulatoryService_GetRelatedPrescribableDrugs_InternalFault_FaultMessage">
+    <wsdl:part xmlns:q11="http://schemas.fdbhealth.com/CC" name="detail" element="q11:InternalFault" />
+  </wsdl:message>
+  <wsdl:message name="IOKAmbulatoryService_GetRelatedPrescribableDrugs_ValidationFault_FaultMessage">
+    <wsdl:part xmlns:q12="http://schemas.fdbhealth.com/CC" name="detail" element="q12:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IOKAmbulatoryService_GetDistinctDosesByPrescribableDrug_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetDistinctDosesByPrescribableDrug" />
+  </wsdl:message>
+  <wsdl:message name="IOKAmbulatoryService_GetDistinctDosesByPrescribableDrug_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetDistinctDosesByPrescribableDrugResponse" />
+  </wsdl:message>
+  <wsdl:message name="IOKAmbulatoryService_GetDistinctDosesByPrescribableDrug_InternalFault_FaultMessage">
+    <wsdl:part xmlns:q13="http://schemas.fdbhealth.com/CC" name="detail" element="q13:InternalFault" />
+  </wsdl:message>
+  <wsdl:message name="IOKAmbulatoryService_GetDistinctDosesByPrescribableDrug_AuthorizationFault_FaultMessage">
+    <wsdl:part xmlns:q14="http://schemas.fdbhealth.com/CC" name="detail" element="q14:AuthorizationFault" />
+  </wsdl:message>
+  <wsdl:message name="IOKAmbulatoryService_GetDistinctDosesByPrescribableDrug_ValidationFault_FaultMessage">
+    <wsdl:part xmlns:q15="http://schemas.fdbhealth.com/CC" name="detail" element="q15:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IOKAmbulatoryService_GetSigsByPrescribableDrug_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetSigsByPrescribableDrug" />
+  </wsdl:message>
+  <wsdl:message name="IOKAmbulatoryService_GetSigsByPrescribableDrug_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetSigsByPrescribableDrugResponse" />
+  </wsdl:message>
+  <wsdl:message name="IOKAmbulatoryService_GetSigsByPrescribableDrug_InternalFault_FaultMessage">
+    <wsdl:part xmlns:q16="http://schemas.fdbhealth.com/CC" name="detail" element="q16:InternalFault" />
+  </wsdl:message>
+  <wsdl:message name="IOKAmbulatoryService_GetSigsByPrescribableDrug_ValidationFault_FaultMessage">
+    <wsdl:part xmlns:q17="http://schemas.fdbhealth.com/CC" name="detail" element="q17:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IOKAmbulatoryService_GetSigsByPrescribableDrug_AuthorizationFault_FaultMessage">
+    <wsdl:part xmlns:q18="http://schemas.fdbhealth.com/CC" name="detail" element="q18:AuthorizationFault" />
+  </wsdl:message>
+  <wsdl:message name="IOKAmbulatoryService_GetSigByID_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetSigByID" />
+  </wsdl:message>
+  <wsdl:message name="IOKAmbulatoryService_GetSigByID_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetSigByIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="IOKAmbulatoryService_GetSigByID_ValidationFault_FaultMessage">
+    <wsdl:part xmlns:q19="http://schemas.fdbhealth.com/CC" name="detail" element="q19:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IOKAmbulatoryService_GetSigByID_InternalFault_FaultMessage">
+    <wsdl:part xmlns:q20="http://schemas.fdbhealth.com/CC" name="detail" element="q20:InternalFault" />
+  </wsdl:message>
+  <wsdl:message name="IOKAmbulatoryService_GetSigByID_AuthorizationFault_FaultMessage">
+    <wsdl:part xmlns:q21="http://schemas.fdbhealth.com/CC" name="detail" element="q21:AuthorizationFault" />
+  </wsdl:message>
+  <wsdl:message name="IOKAmbulatoryService_GetAdultSigsByPrescribableDrug_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAdultSigsByPrescribableDrug" />
+  </wsdl:message>
+  <wsdl:message name="IOKAmbulatoryService_GetAdultSigsByPrescribableDrug_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAdultSigsByPrescribableDrugResponse" />
+  </wsdl:message>
+  <wsdl:message name="IOKAmbulatoryService_GetAdultSigsByPrescribableDrug_ValidationFault_FaultMessage">
+    <wsdl:part xmlns:q22="http://schemas.fdbhealth.com/CC" name="detail" element="q22:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IOKAmbulatoryService_GetAdultSigsByPrescribableDrug_AuthorizationFault_FaultMessage">
+    <wsdl:part xmlns:q23="http://schemas.fdbhealth.com/CC" name="detail" element="q23:AuthorizationFault" />
+  </wsdl:message>
+  <wsdl:message name="IOKAmbulatoryService_GetAdultSigsByPrescribableDrug_InternalFault_FaultMessage">
+    <wsdl:part xmlns:q24="http://schemas.fdbhealth.com/CC" name="detail" element="q24:InternalFault" />
+  </wsdl:message>
+  <wsdl:message name="IOKAmbulatoryService_GetSigsByOrderID_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetSigsByOrderID" />
+  </wsdl:message>
+  <wsdl:message name="IOKAmbulatoryService_GetSigsByOrderID_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetSigsByOrderIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="IOKAmbulatoryService_GetSigsByOrderID_InternalFault_FaultMessage">
+    <wsdl:part xmlns:q25="http://schemas.fdbhealth.com/CC" name="detail" element="q25:InternalFault" />
+  </wsdl:message>
+  <wsdl:message name="IOKAmbulatoryService_GetSigsByOrderID_ValidationFault_FaultMessage">
+    <wsdl:part xmlns:q26="http://schemas.fdbhealth.com/CC" name="detail" element="q26:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IOKAmbulatoryService_GetSigsByOrderID_AuthorizationFault_FaultMessage">
+    <wsdl:part xmlns:q27="http://schemas.fdbhealth.com/CC" name="detail" element="q27:AuthorizationFault" />
+  </wsdl:message>
+  <wsdl:message name="IOKAmbulatoryService_GetSearchTermsByPrescribableDrug_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetSearchTermsByPrescribableDrug" />
+  </wsdl:message>
+  <wsdl:message name="IOKAmbulatoryService_GetSearchTermsByPrescribableDrug_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetSearchTermsByPrescribableDrugResponse" />
+  </wsdl:message>
+  <wsdl:message name="IOKAmbulatoryService_GetSearchTermsByPrescribableDrug_InternalFault_FaultMessage">
+    <wsdl:part xmlns:q28="http://schemas.fdbhealth.com/CC" name="detail" element="q28:InternalFault" />
+  </wsdl:message>
+  <wsdl:message name="IOKAmbulatoryService_GetSearchTermsByPrescribableDrug_AuthorizationFault_FaultMessage">
+    <wsdl:part xmlns:q29="http://schemas.fdbhealth.com/CC" name="detail" element="q29:AuthorizationFault" />
+  </wsdl:message>
+  <wsdl:message name="IOKAmbulatoryService_GetSearchTermsByPrescribableDrug_ValidationFault_FaultMessage">
+    <wsdl:part xmlns:q30="http://schemas.fdbhealth.com/CC" name="detail" element="q30:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IOKAmbulatoryService_GetCalculatedSigsByPrescribableDrug_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetCalculatedSigsByPrescribableDrug" />
+  </wsdl:message>
+  <wsdl:message name="IOKAmbulatoryService_GetCalculatedSigsByPrescribableDrug_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetCalculatedSigsByPrescribableDrugResponse" />
+  </wsdl:message>
+  <wsdl:message name="IOKAmbulatoryService_GetCalculatedSigsByPrescribableDrug_ValidationFault_FaultMessage">
+    <wsdl:part xmlns:q31="http://schemas.fdbhealth.com/CC" name="detail" element="q31:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IOKAmbulatoryService_GetCalculatedSigsByPrescribableDrug_InternalFault_FaultMessage">
+    <wsdl:part xmlns:q32="http://schemas.fdbhealth.com/CC" name="detail" element="q32:InternalFault" />
+  </wsdl:message>
+  <wsdl:message name="IOKAmbulatoryService_GetCalculatedSigsByPrescribableDrug_AuthorizationFault_FaultMessage">
+    <wsdl:part xmlns:q33="http://schemas.fdbhealth.com/CC" name="detail" element="q33:AuthorizationFault" />
+  </wsdl:message>
+  <wsdl:message name="IOKAmbulatoryService_GetCalculatedSigByID_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetCalculatedSigByID" />
+  </wsdl:message>
+  <wsdl:message name="IOKAmbulatoryService_GetCalculatedSigByID_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetCalculatedSigByIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="IOKAmbulatoryService_GetCalculatedSigByID_InternalFault_FaultMessage">
+    <wsdl:part xmlns:q34="http://schemas.fdbhealth.com/CC" name="detail" element="q34:InternalFault" />
+  </wsdl:message>
+  <wsdl:message name="IOKAmbulatoryService_GetCalculatedSigByID_AuthorizationFault_FaultMessage">
+    <wsdl:part xmlns:q35="http://schemas.fdbhealth.com/CC" name="detail" element="q35:AuthorizationFault" />
+  </wsdl:message>
+  <wsdl:message name="IOKAmbulatoryService_GetCalculatedSigByID_ValidationFault_FaultMessage">
+    <wsdl:part xmlns:q36="http://schemas.fdbhealth.com/CC" name="detail" element="q36:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IOKAmbulatoryService_GetSigTemplate_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetSigTemplate" />
+  </wsdl:message>
+  <wsdl:message name="IOKAmbulatoryService_GetSigTemplate_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetSigTemplateResponse" />
+  </wsdl:message>
+  <wsdl:message name="IOKAmbulatoryService_GetSigTemplate_InternalFault_FaultMessage">
+    <wsdl:part xmlns:q37="http://schemas.fdbhealth.com/CC" name="detail" element="q37:InternalFault" />
+  </wsdl:message>
+  <wsdl:message name="IOKAmbulatoryService_GetSigTemplate_AuthorizationFault_FaultMessage">
+    <wsdl:part xmlns:q38="http://schemas.fdbhealth.com/CC" name="detail" element="q38:AuthorizationFault" />
+  </wsdl:message>
+  <wsdl:message name="IOKAmbulatoryService_GetSigTemplate_ValidationFault_FaultMessage">
+    <wsdl:part xmlns:q39="http://schemas.fdbhealth.com/CC" name="detail" element="q39:ValidationFault" />
+  </wsdl:message>
+  <wsdl:portType name="IOKAmbulatoryService">
+    <wsdl:operation name="SearchSigs">
+      <wsdl:input wsaw:Action="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/SearchSigs" message="tns:IOKAmbulatoryService_SearchSigs_InputMessage" />
+      <wsdl:output wsaw:Action="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/SearchSigsResponse" message="tns:IOKAmbulatoryService_SearchSigs_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/SearchSigsAuthorizationFault" name="AuthorizationFault" message="tns:IOKAmbulatoryService_SearchSigs_AuthorizationFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/SearchSigsValidationFault" name="ValidationFault" message="tns:IOKAmbulatoryService_SearchSigs_ValidationFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/SearchSigsInternalFault" name="InternalFault" message="tns:IOKAmbulatoryService_SearchSigs_InternalFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SearchPrescribableDrugs">
+      <wsdl:input wsaw:Action="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/SearchPrescribableDrugs" message="tns:IOKAmbulatoryService_SearchPrescribableDrugs_InputMessage" />
+      <wsdl:output wsaw:Action="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/SearchPrescribableDrugsResponse" message="tns:IOKAmbulatoryService_SearchPrescribableDrugs_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/SearchPrescribableDrugsAuthorizationFault" name="AuthorizationFault" message="tns:IOKAmbulatoryService_SearchPrescribableDrugs_AuthorizationFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/SearchPrescribableDrugsValidationFault" name="ValidationFault" message="tns:IOKAmbulatoryService_SearchPrescribableDrugs_ValidationFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/SearchPrescribableDrugsInternalFault" name="InternalFault" message="tns:IOKAmbulatoryService_SearchPrescribableDrugs_InternalFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetPrescribableDrugByID">
+      <wsdl:input wsaw:Action="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetPrescribableDrugByID" message="tns:IOKAmbulatoryService_GetPrescribableDrugByID_InputMessage" />
+      <wsdl:output wsaw:Action="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetPrescribableDrugByIDResponse" message="tns:IOKAmbulatoryService_GetPrescribableDrugByID_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetPrescribableDrugByIDAuthorizationFault" name="AuthorizationFault" message="tns:IOKAmbulatoryService_GetPrescribableDrugByID_AuthorizationFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetPrescribableDrugByIDValidationFault" name="ValidationFault" message="tns:IOKAmbulatoryService_GetPrescribableDrugByID_ValidationFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetPrescribableDrugByIDInternalFault" name="InternalFault" message="tns:IOKAmbulatoryService_GetPrescribableDrugByID_InternalFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetRelatedPrescribableDrugs">
+      <wsdl:input wsaw:Action="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetRelatedPrescribableDrugs" message="tns:IOKAmbulatoryService_GetRelatedPrescribableDrugs_InputMessage" />
+      <wsdl:output wsaw:Action="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetRelatedPrescribableDrugsResponse" message="tns:IOKAmbulatoryService_GetRelatedPrescribableDrugs_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetRelatedPrescribableDrugsAuthorizationFault" name="AuthorizationFault" message="tns:IOKAmbulatoryService_GetRelatedPrescribableDrugs_AuthorizationFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetRelatedPrescribableDrugsInternalFault" name="InternalFault" message="tns:IOKAmbulatoryService_GetRelatedPrescribableDrugs_InternalFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetRelatedPrescribableDrugsValidationFault" name="ValidationFault" message="tns:IOKAmbulatoryService_GetRelatedPrescribableDrugs_ValidationFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetDistinctDosesByPrescribableDrug">
+      <wsdl:input wsaw:Action="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetDistinctDosesByPrescribableDrug" message="tns:IOKAmbulatoryService_GetDistinctDosesByPrescribableDrug_InputMessage" />
+      <wsdl:output wsaw:Action="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetDistinctDosesByPrescribableDrugResponse" message="tns:IOKAmbulatoryService_GetDistinctDosesByPrescribableDrug_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetDistinctDosesByPrescribableDrugInternalFault" name="InternalFault" message="tns:IOKAmbulatoryService_GetDistinctDosesByPrescribableDrug_InternalFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetDistinctDosesByPrescribableDrugAuthorizationFault" name="AuthorizationFault" message="tns:IOKAmbulatoryService_GetDistinctDosesByPrescribableDrug_AuthorizationFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetDistinctDosesByPrescribableDrugValidationFault" name="ValidationFault" message="tns:IOKAmbulatoryService_GetDistinctDosesByPrescribableDrug_ValidationFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSigsByPrescribableDrug">
+      <wsdl:input wsaw:Action="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetSigsByPrescribableDrug" message="tns:IOKAmbulatoryService_GetSigsByPrescribableDrug_InputMessage" />
+      <wsdl:output wsaw:Action="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetSigsByPrescribableDrugResponse" message="tns:IOKAmbulatoryService_GetSigsByPrescribableDrug_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetSigsByPrescribableDrugInternalFault" name="InternalFault" message="tns:IOKAmbulatoryService_GetSigsByPrescribableDrug_InternalFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetSigsByPrescribableDrugValidationFault" name="ValidationFault" message="tns:IOKAmbulatoryService_GetSigsByPrescribableDrug_ValidationFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetSigsByPrescribableDrugAuthorizationFault" name="AuthorizationFault" message="tns:IOKAmbulatoryService_GetSigsByPrescribableDrug_AuthorizationFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSigByID">
+      <wsdl:input wsaw:Action="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetSigByID" message="tns:IOKAmbulatoryService_GetSigByID_InputMessage" />
+      <wsdl:output wsaw:Action="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetSigByIDResponse" message="tns:IOKAmbulatoryService_GetSigByID_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetSigByIDValidationFault" name="ValidationFault" message="tns:IOKAmbulatoryService_GetSigByID_ValidationFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetSigByIDInternalFault" name="InternalFault" message="tns:IOKAmbulatoryService_GetSigByID_InternalFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetSigByIDAuthorizationFault" name="AuthorizationFault" message="tns:IOKAmbulatoryService_GetSigByID_AuthorizationFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAdultSigsByPrescribableDrug">
+      <wsdl:input wsaw:Action="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetAdultSigsByPrescribableDrug" message="tns:IOKAmbulatoryService_GetAdultSigsByPrescribableDrug_InputMessage" />
+      <wsdl:output wsaw:Action="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetAdultSigsByPrescribableDrugResponse" message="tns:IOKAmbulatoryService_GetAdultSigsByPrescribableDrug_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetAdultSigsByPrescribableDrugValidationFault" name="ValidationFault" message="tns:IOKAmbulatoryService_GetAdultSigsByPrescribableDrug_ValidationFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetAdultSigsByPrescribableDrugAuthorizationFault" name="AuthorizationFault" message="tns:IOKAmbulatoryService_GetAdultSigsByPrescribableDrug_AuthorizationFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetAdultSigsByPrescribableDrugInternalFault" name="InternalFault" message="tns:IOKAmbulatoryService_GetAdultSigsByPrescribableDrug_InternalFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSigsByOrderID">
+      <wsdl:input wsaw:Action="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetSigsByOrderID" message="tns:IOKAmbulatoryService_GetSigsByOrderID_InputMessage" />
+      <wsdl:output wsaw:Action="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetSigsByOrderIDResponse" message="tns:IOKAmbulatoryService_GetSigsByOrderID_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetSigsByOrderIDInternalFault" name="InternalFault" message="tns:IOKAmbulatoryService_GetSigsByOrderID_InternalFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetSigsByOrderIDValidationFault" name="ValidationFault" message="tns:IOKAmbulatoryService_GetSigsByOrderID_ValidationFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetSigsByOrderIDAuthorizationFault" name="AuthorizationFault" message="tns:IOKAmbulatoryService_GetSigsByOrderID_AuthorizationFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSearchTermsByPrescribableDrug">
+      <wsdl:input wsaw:Action="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetSearchTermsByPrescribableDrug" message="tns:IOKAmbulatoryService_GetSearchTermsByPrescribableDrug_InputMessage" />
+      <wsdl:output wsaw:Action="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetSearchTermsByPrescribableDrugResponse" message="tns:IOKAmbulatoryService_GetSearchTermsByPrescribableDrug_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetSearchTermsByPrescribableDrugInternalFault" name="InternalFault" message="tns:IOKAmbulatoryService_GetSearchTermsByPrescribableDrug_InternalFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetSearchTermsByPrescribableDrugAuthorizationFault" name="AuthorizationFault" message="tns:IOKAmbulatoryService_GetSearchTermsByPrescribableDrug_AuthorizationFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetSearchTermsByPrescribableDrugValidationFault" name="ValidationFault" message="tns:IOKAmbulatoryService_GetSearchTermsByPrescribableDrug_ValidationFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCalculatedSigsByPrescribableDrug">
+      <wsdl:input wsaw:Action="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetCalculatedSigsByPrescribableDrug" message="tns:IOKAmbulatoryService_GetCalculatedSigsByPrescribableDrug_InputMessage" />
+      <wsdl:output wsaw:Action="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetCalculatedSigsByPrescribableDrugResponse" message="tns:IOKAmbulatoryService_GetCalculatedSigsByPrescribableDrug_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetCalculatedSigsByPrescribableDrugValidationFault" name="ValidationFault" message="tns:IOKAmbulatoryService_GetCalculatedSigsByPrescribableDrug_ValidationFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetCalculatedSigsByPrescribableDrugInternalFault" name="InternalFault" message="tns:IOKAmbulatoryService_GetCalculatedSigsByPrescribableDrug_InternalFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetCalculatedSigsByPrescribableDrugAuthorizationFault" name="AuthorizationFault" message="tns:IOKAmbulatoryService_GetCalculatedSigsByPrescribableDrug_AuthorizationFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCalculatedSigByID">
+      <wsdl:input wsaw:Action="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetCalculatedSigByID" message="tns:IOKAmbulatoryService_GetCalculatedSigByID_InputMessage" />
+      <wsdl:output wsaw:Action="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetCalculatedSigByIDResponse" message="tns:IOKAmbulatoryService_GetCalculatedSigByID_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetCalculatedSigByIDInternalFault" name="InternalFault" message="tns:IOKAmbulatoryService_GetCalculatedSigByID_InternalFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetCalculatedSigByIDAuthorizationFault" name="AuthorizationFault" message="tns:IOKAmbulatoryService_GetCalculatedSigByID_AuthorizationFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetCalculatedSigByIDValidationFault" name="ValidationFault" message="tns:IOKAmbulatoryService_GetCalculatedSigByID_ValidationFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSigTemplate">
+      <wsdl:input wsaw:Action="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetSigTemplate" message="tns:IOKAmbulatoryService_GetSigTemplate_InputMessage" />
+      <wsdl:output wsaw:Action="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetSigTemplateResponse" message="tns:IOKAmbulatoryService_GetSigTemplate_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetSigTemplateInternalFault" name="InternalFault" message="tns:IOKAmbulatoryService_GetSigTemplate_InternalFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetSigTemplateAuthorizationFault" name="AuthorizationFault" message="tns:IOKAmbulatoryService_GetSigTemplate_AuthorizationFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetSigTemplateValidationFault" name="ValidationFault" message="tns:IOKAmbulatoryService_GetSigTemplate_ValidationFault_FaultMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="FDB.CC.ContentServices.Soap.V1_3.OKAmbulatoryService" type="tns:IOKAmbulatoryService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="SearchSigs">
+      <soap:operation soapAction="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/SearchSigs" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="AuthorizationFault">
+        <soap:fault use="literal" name="AuthorizationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ValidationFault">
+        <soap:fault use="literal" name="ValidationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InternalFault">
+        <soap:fault use="literal" name="InternalFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="SearchPrescribableDrugs">
+      <soap:operation soapAction="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/SearchPrescribableDrugs" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="AuthorizationFault">
+        <soap:fault use="literal" name="AuthorizationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ValidationFault">
+        <soap:fault use="literal" name="ValidationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InternalFault">
+        <soap:fault use="literal" name="InternalFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetPrescribableDrugByID">
+      <soap:operation soapAction="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetPrescribableDrugByID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="AuthorizationFault">
+        <soap:fault use="literal" name="AuthorizationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ValidationFault">
+        <soap:fault use="literal" name="ValidationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InternalFault">
+        <soap:fault use="literal" name="InternalFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetRelatedPrescribableDrugs">
+      <soap:operation soapAction="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetRelatedPrescribableDrugs" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="AuthorizationFault">
+        <soap:fault use="literal" name="AuthorizationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InternalFault">
+        <soap:fault use="literal" name="InternalFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ValidationFault">
+        <soap:fault use="literal" name="ValidationFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetDistinctDosesByPrescribableDrug">
+      <soap:operation soapAction="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetDistinctDosesByPrescribableDrug" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="InternalFault">
+        <soap:fault use="literal" name="InternalFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="AuthorizationFault">
+        <soap:fault use="literal" name="AuthorizationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ValidationFault">
+        <soap:fault use="literal" name="ValidationFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetSigsByPrescribableDrug">
+      <soap:operation soapAction="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetSigsByPrescribableDrug" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="InternalFault">
+        <soap:fault use="literal" name="InternalFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ValidationFault">
+        <soap:fault use="literal" name="ValidationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="AuthorizationFault">
+        <soap:fault use="literal" name="AuthorizationFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetSigByID">
+      <soap:operation soapAction="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetSigByID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ValidationFault">
+        <soap:fault use="literal" name="ValidationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InternalFault">
+        <soap:fault use="literal" name="InternalFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="AuthorizationFault">
+        <soap:fault use="literal" name="AuthorizationFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetAdultSigsByPrescribableDrug">
+      <soap:operation soapAction="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetAdultSigsByPrescribableDrug" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ValidationFault">
+        <soap:fault use="literal" name="ValidationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="AuthorizationFault">
+        <soap:fault use="literal" name="AuthorizationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InternalFault">
+        <soap:fault use="literal" name="InternalFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetSigsByOrderID">
+      <soap:operation soapAction="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetSigsByOrderID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="InternalFault">
+        <soap:fault use="literal" name="InternalFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ValidationFault">
+        <soap:fault use="literal" name="ValidationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="AuthorizationFault">
+        <soap:fault use="literal" name="AuthorizationFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetSearchTermsByPrescribableDrug">
+      <soap:operation soapAction="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetSearchTermsByPrescribableDrug" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="InternalFault">
+        <soap:fault use="literal" name="InternalFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="AuthorizationFault">
+        <soap:fault use="literal" name="AuthorizationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ValidationFault">
+        <soap:fault use="literal" name="ValidationFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetCalculatedSigsByPrescribableDrug">
+      <soap:operation soapAction="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetCalculatedSigsByPrescribableDrug" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ValidationFault">
+        <soap:fault use="literal" name="ValidationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InternalFault">
+        <soap:fault use="literal" name="InternalFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="AuthorizationFault">
+        <soap:fault use="literal" name="AuthorizationFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetCalculatedSigByID">
+      <soap:operation soapAction="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetCalculatedSigByID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="InternalFault">
+        <soap:fault use="literal" name="InternalFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="AuthorizationFault">
+        <soap:fault use="literal" name="AuthorizationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ValidationFault">
+        <soap:fault use="literal" name="ValidationFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetSigTemplate">
+      <soap:operation soapAction="http://schemas.fdbhealth.com/CC/v1_3/IOKAmbulatoryService/GetSigTemplate" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="InternalFault">
+        <soap:fault use="literal" name="InternalFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="AuthorizationFault">
+        <soap:fault use="literal" name="AuthorizationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ValidationFault">
+        <soap:fault use="literal" name="ValidationFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="OKAmbulatoryService">
+    <wsdl:port name="FDB.CC.ContentServices.Soap.V1_3.OKAmbulatoryService" binding="tns:FDB.CC.ContentServices.Soap.V1_3.OKAmbulatoryService">
+      <soap:address location="http://api.fdbcloudconnector.com/cc/Soap/v1_3/OKAmbulatoryService.svc" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
